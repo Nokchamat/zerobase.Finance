@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +57,7 @@ public class CompanyService {
         // 스크래핑 결과
         CompanyEntity companyEntity = this.companyRepository.save(new CompanyEntity(company));
 
-        List<DividendEntity> dividendEntities = scarpResult.getDividendEntities().stream()
+        List<DividendEntity> dividendEntities = scarpResult.getDividends().stream()
                                                     .map(e -> new DividendEntity(companyEntity.getId(), e))
                                                     .collect(Collectors.toList());
 
@@ -86,5 +87,17 @@ public class CompanyService {
         this.trie.remove(keyword);
     }
 
+    public String deleteCompany(String ticker) {
+
+        var company = this.companyRepository.findByTicker(ticker)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사입니다."));
+
+        this.dividendRepository.deleteAllByCompanyId(company.getId());
+        this.companyRepository.delete(company);
+
+        this.deleteAutocompleteKeyword(company.getName());
+
+        return company.getName();
+    }
 
 }

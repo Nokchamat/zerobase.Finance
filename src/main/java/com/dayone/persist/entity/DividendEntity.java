@@ -5,17 +5,23 @@ import com.dayone.model.Dividend;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.context.annotation.ScopeMetadata;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "DIVIDEND")
 @Getter
 @ToString
 @NoArgsConstructor
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = { "companyId", "date"}
+                )
+        }
+
+)
 public class DividendEntity {
 
     @Id
