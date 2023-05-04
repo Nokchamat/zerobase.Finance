@@ -1,5 +1,6 @@
 package com.dayone.service;
 
+import com.dayone.exception.impl.NoCompanyException;
 import com.dayone.model.Company;
 import com.dayone.model.ScrapedResult;
 import com.dayone.persist.CompanyRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,7 +90,7 @@ public class CompanyService {
     public String deleteCompany(String ticker) {
 
         var company = this.companyRepository.findByTicker(ticker)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사입니다."));
+                .orElseThrow(() -> new NoCompanyException());
 
         this.dividendRepository.deleteAllByCompanyId(company.getId());
         this.companyRepository.delete(company);

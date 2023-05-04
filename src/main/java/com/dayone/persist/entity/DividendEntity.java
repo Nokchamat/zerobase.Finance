@@ -5,7 +5,6 @@ import com.dayone.model.Dividend;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.context.annotation.ScopeMetadata;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

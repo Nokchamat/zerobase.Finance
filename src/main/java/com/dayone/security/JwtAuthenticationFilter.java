@@ -1,6 +1,5 @@
 package com.dayone.security;
 
-import antlr.Token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -35,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication auth = this.tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
+            log.info(String.format("[%s} -> %s", this.tokenProvider.getUsername(token), request.getRequestURI()));
         }
 
         filterChain.doFilter(request, response);
